@@ -22,7 +22,15 @@
    see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
+#ifdef IN_GPP
+#define PICOLIBC_LD "picolibcpp.ld"
+#define PICOLIBC_BEGIN " crtbegin%O%s"
+#define PICOLIBC_END   "crtend%O%s"
+#else
 #define PICOLIBC_LD "picolibc.ld"
+#define PICOLIBC_BEGIN ""
+#define PICOLIBC_END   ""
+#endif
 
 /* Default to local-exec TLS model.  */
 #undef OS_CC1_SPEC
@@ -48,6 +56,9 @@
 
 /* Select alternate crt0 version if --crt0 is specified */
 #undef  STARTFILE_SPEC
-#define STARTFILE_SPEC "%{-crt0=*:crt0-%*%O%s; :crt0%O%s}"
+#define STARTFILE_SPEC "%{-crt0=*:crt0-%*%O%s; :crt0%O%s}" PICOLIBC_BEGIN
+
+#undef  ENDFILE_SPEC
+#define ENDFILE_SPEC PICOLIBC_END
 
 #define EH_TABLES_CAN_BE_READ_ONLY 1
