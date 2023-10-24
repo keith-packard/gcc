@@ -432,6 +432,9 @@ extern const sh_atomic_model& selected_atomic_model (void);
 #define UNITS_PER_WORD	(4)
 #define MIN_UNITS_PER_WORD 4
 
+/* Use MIPS-style NANs */
+#define QUIET_NAN_NEGATED
+
 /* Scaling factor for Dwarf data offsets for CFI information.
    The dwarf2out.cc default would use -UNITS_PER_WORD.  */
 #define DWARF_CIE_DATA_ALIGNMENT -4

@@ -27,3 +27,8 @@ VECTOR_MODES (FLOAT, 16);     /*       V8HF V4SF V2DF */
 VECTOR_MODE (INT, DI, 4);     /*                 V4DI */
 VECTOR_MODE (INT, DI, 8);     /*                 V8DI */
 VECTOR_MODE (FLOAT, SF, 16);  /*                V16SF */
+
+/* SH has the same reversed quiet bit as MIPS.
+   ??? Why is this called the MIPS format.  */
+RESET_FLOAT_FORMAT (SF, mips_single_format);
+RESET_FLOAT_FORMAT (DF, mips_double_format);
