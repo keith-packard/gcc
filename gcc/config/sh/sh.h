@@ -1877,4 +1877,6 @@ extern tree *sh_deferred_function_attributes_tail;
 2:\n" TEXT_SECTION_ASM_OP);
 #endif /* (defined CRT_BEGIN || defined CRT_END) */
 
+#define HACK_DISABLE_PARALLEL_CSE_SIMPLIFY_USE_CLOBBER
+
 #endif /* ! GCC_SH_H */
