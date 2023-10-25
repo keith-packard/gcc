@@ -156,7 +156,50 @@ reload_cse_simplify (rtx_insn *insn, rtx testreg)
 		  value = SET_DEST (part);
 		}
 	    }
+	  /*
+	   * Here's a hack for SH targets. In this machine,
+	   * the FPSCR (floating-point status/control register)
+	   * contains both the FP status bits (eq, lt, etc)
+	   * as well as a special control bit (PR) that decides whether
+	   * FP instructions operate in single or double mode.
+	   *
+	   * On new enough targets, there's a special instruction
+	   * (fpchg) that just flips the PR bits without messing with
+	   * anything else. No problems here.
+	   *
+	   * On other targets, the only way to change the PR bit is to
+	   * write the whole FPSCR register. We need to make sure the
+	   * FPSCR is read again after any FP operation but before any
+	   * FPSCR write, so the FPSCR read operation does this:
+	   *
+	   * (define_insn "sts_fpscr"
+	   *  [(set (match_operand:SI 0 "fpscr_movdst_operand" "=r,<")
+	   *	    (reg:SI FPSCR_REG))
+	   *   (use (reg:SI FPSCR_STAT_REG))
+	   *   (use (reg:SI FPSCR_MODES_REG))]
+	   *
+	   * If the code here only looks at the 'set' operation, it
+	   * misses the critical information that this operation
+	   * depends upon the FPSCR_REG as well as the virtual
+	   * FPSCR_STAT_REG and FPSCR_MODES_REG values.
+	   *
+	   * Because of this, it determines that a previous FPSCR
+	   * value (probably loaded before an FP operation) is the
+	   * same as would be loaded by this insn and so this insn is
+	   * deleted. This causes the previous FPSCR status bits to
+	   * smash any status updates caused by intervening FP
+	   * operations.
+	   *
+	   * We avoid this by not deleting the instruction in this
+	   * case, which is "safe", but will probably also hit some
+	   * other valid use cases. A correct fix would take more time
+	   * than I'm willing to spend.
+	   */
+#ifdef HACK_DISABLE_PARALLEL_CSE_SIMPLIFY_USE_CLOBBER
+	  else
+#else
 	  else if (GET_CODE (part) != CLOBBER && GET_CODE (part) != USE)
+#endif
 	    break;
 	}
 
