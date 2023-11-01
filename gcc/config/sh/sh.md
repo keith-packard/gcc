@@ -9029,7 +9029,7 @@
    (use (match_operand 3 "immediate_operand"))]
   "TARGET_SH1 && optimize"
 {
-  if (! optimize_insn_for_size_p () && sh_expand_cmpstr (operands))
+  if (0 && ! optimize_insn_for_size_p () && sh_expand_cmpstr (operands))
     DONE;
   else
     FAIL;
@@ -9043,7 +9043,7 @@
    (use (match_operand:SI 4 "immediate_operand"))]
   "TARGET_SH1 && optimize"
 {
-  if (! optimize_insn_for_size_p () && sh_expand_cmpnstr (operands))
+  if (0 && ! optimize_insn_for_size_p () && sh_expand_cmpnstr (operands))
     DONE;
   else
     FAIL;
