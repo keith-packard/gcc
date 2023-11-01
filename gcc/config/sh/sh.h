@@ -1423,11 +1423,11 @@ extern bool current_function_interrupt;
 #define CASE_VECTOR_MODE ((! optimize || TARGET_BIGTABLE) ? SImode : HImode)
 
 #define CASE_VECTOR_SHORTEN_MODE(MIN_OFFSET, MAX_OFFSET, BODY) \
-((MIN_OFFSET) >= 0 && (MAX_OFFSET) <= 127 \
+((MIN_OFFSET) >= 0 && (MAX_OFFSET) <= 125 \
  ? (ADDR_DIFF_VEC_FLAGS (BODY).offset_unsigned = 0, QImode) \
- : (MIN_OFFSET) >= 0 && (MAX_OFFSET) <= 255 \
+ : (MIN_OFFSET) >= 0 && (MAX_OFFSET) <= 253 \
  ? (ADDR_DIFF_VEC_FLAGS (BODY).offset_unsigned = 1, QImode) \
- : (MIN_OFFSET) >= -32768 && (MAX_OFFSET) <= 32767 ? HImode \
+ : (MIN_OFFSET) >= -32768 && (MAX_OFFSET) <= 32765 ? HImode \
  : SImode)
 
 /* Define as C expression which evaluates to nonzero if the tablejump
