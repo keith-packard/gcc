@@ -121,6 +121,13 @@
    of LSE instructions.  */
 #define TARGET_OUTLINE_ATOMICS (aarch64_flag_outline_atomics)
 
+#ifndef AARCH64_SIMD_MEMOPS_DEFAULT
+#define AARCH64_SIMD_MEMOPS_DEFAULT 1
+#endif
+
+/* Allow use of SIMD registers for memory copy and set expansions */
+#define TARGET_SIMD_MEMOPS (TARGET_SIMD && aarch64_flag_simd_memops)
+
 /* Align global data as an optimization.  */
 #define DATA_ALIGNMENT(EXP, ALIGN) aarch64_data_alignment (EXP, ALIGN)
 
